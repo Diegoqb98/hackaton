@@ -2,6 +2,7 @@ from src.application.calcular_prod_fotovoltaica import EnergyProductionCalculato
 from src.application.calculo_precio_kw_h import PriceCalculatorFromFile
 from src.infrastructure.benefition_calculator import BeneficioEstimation
 from src.infrastructure.config.config import Configuracion
+from src.infrastructure.db import DatabaseConnector
 from src.infrastructure.descargar_archivo import FileDownloaderProcessor
 from src.infrastructure.leer_archivo import FileHandler
 
@@ -37,12 +38,13 @@ class MainExecutor:
         config = Configuracion(self.config_file)
         
         # Crear la instancia de la clase EnergyProductionCalculator
-        calculator = EnergyProductionCalculator(config)
+        calculator = EnergyProductionCalculator(config, 1) # 100% efectividad
         
         # Calcular la energía para la fecha proporcionada
         produccion_energia = calculator.calculate_energy(self.date_str)
         
-        
+        print(produccion_energia)
+
         # Crear instancia de FileDownloaderProcessor para descargar el archivo
         downloader_processor = FileDownloaderProcessor(self.base_url, self.download_folder, self.date_str, self.api_type)
         
@@ -60,6 +62,8 @@ class MainExecutor:
         # Precios energia KW/h calculado
         precios_peninsula, precios_baleares = price_calculator.calculate_prices()
 
+        price_calculator.display_prices()
+
         # Crear la instancia de la clase
         beneficio_estimator = BeneficioEstimation(produccion_energia, precios_peninsula, precios_baleares)
 
@@ -69,4 +73,18 @@ class MainExecutor:
         # Mostrar el resultado
         print(f"Beneficio en la Península: {beneficio['beneficio_peninsula']} €")
         print(f"Beneficio en Baleares: {beneficio['beneficio_baleares']} €")
+
+
+        # db = DatabaseConnector(
+        #     db_name="mi_base_datos",
+        #     user="mi_usuario",
+        #     password="mi_contraseña",
+        #     host="localhost",
+        #     port=5432
+        # )
+
+        # db.insert_produccion_energia(data_produccion)
+        # db.insert_precios_peninsula(data_precios_peninsula)
+        # db.insert_precios_baleares(data_precios_baleares)
+        # db.insert_produccion_energia(data_produccion)
 

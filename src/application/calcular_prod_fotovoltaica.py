@@ -12,7 +12,7 @@ class EnergyProductionCalculator:
     Clase para calcular la energía producida por un sistema fotovoltaico en base a la configuración proporcionada.
     """
 
-    def __init__(self, config, eficiencia_sistema=0.85, num_paneles=6000):
+    def __init__(self, config, eficiencia_sistema=0.85):
         """
         Inicializa la clase con los parámetros de configuración y otros valores relevantes.
         :param config: Instancia de la clase Configuracion que contiene los parámetros de configuración.
@@ -21,7 +21,7 @@ class EnergyProductionCalculator:
         """
         self.config = config
         self.eficiencia_sistema = eficiencia_sistema
-        self.num_paneles = num_paneles
+        self.num_paneles = self.config.get_modulo().get('NumTotal')
         
         # Extraer los parámetros de configuración
         self.Isc = self.config.get_modulo().get('Isc')

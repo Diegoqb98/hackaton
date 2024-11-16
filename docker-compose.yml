@@ -7,3 +7,21 @@ services:
     env_file:
       - .env  # Load environment variables from .env file
     working_dir: /app
+    depends_on:
+      - postgres  # Asegura que PostgreSQL esté disponible antes de iniciar la app
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: your_user  # Usuario de PostgreSQL
+      POSTGRES_PASSWORD: your_password  # Contraseña de PostgreSQL
+      POSTGRES_DB: your_database  # Base de datos inicial
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # Persistencia de datos
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Archivo de inicialización
+    ports:
+      - "5432:5432"  # Exponer el puerto para conectarse desde tu máquina local
+
+volumes:
+  postgres-data:

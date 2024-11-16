@@ -55,6 +55,7 @@ class PriceCalculatorFromFile:
                 if i == 0:  # Solo procesamos la primera fila
                     precios_marginales = [float(precio.strip().replace(',', '.')) for precio in row]
                     break  # No es necesario seguir buscando
+                
         return precios_marginales
 
     def calculate_prices(self):
@@ -65,15 +66,21 @@ class PriceCalculatorFromFile:
         # Convertir los precios marginales de la península de €/MWh a €/kWh
         precios_peninsula = [precio / 1000 for precio in self.precios_marginales]
 
-        # Calcular los precios estimados para Baleares aplicando el coeficiente de apuntamiento
+        # Calcular el precio medio diario de la península (€/kWh)
+        precio_medio_diario = sum(precios_peninsula) / len(precios_peninsula)
+
+        print("\nPrecio medio diario peninsula: \n",precio_medio_diario, "\n") 
+
+        # Calcular los precios estimados para Baleares aplicando el precio medio diario y el coeficiente de apuntamiento
         precios_baleares = []
-        for hora in range(24):
-            # Obtener el coeficiente para esta hora
-            coef = float(self.coef_apuntamiento.get(str(hora), 1))  # Valor por defecto 1 si no existe el coef
-            precio_baleares_hora = self.precios_marginales[hora] * coef / 1000  # Convertir a €/kWh
+        for hora in range(1,25):
+            # Obtener el coeficiente de apuntamiento para esta hora
+            coef = float(self.coef_apuntamiento.get(str(hora), 1))  # Valor por defecto 1 si no existe el coeficiente
+            # Calcular el precio para esta hora en Baleares
+            precio_baleares_hora = precio_medio_diario * coef  # Precio medio diario multiplicado por el coeficiente
             precios_baleares.append(precio_baleares_hora)
 
-        return [float(num) for num in precios_peninsula], [float(num) for num in precios_baleares]
+        return precios_peninsula, precios_baleares
 
     def display_prices(self):
         """
@@ -83,10 +90,10 @@ class PriceCalculatorFromFile:
 
         # Mostrar los resultados
         print("\nPrecios marginales de la península por hora (€/kWh):")
-        print(precios_peninsula)
+        print(precios_peninsula,"\n")
 
         print("\nPrecios estimados para Baleares por hora (€/kWh):")
-        print(precios_baleares)
+        print(precios_baleares,"\n")
 
 
 # Ejemplo de uso
