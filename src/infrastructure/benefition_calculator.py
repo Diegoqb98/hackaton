@@ -39,19 +39,30 @@ class BeneficioEstimation:
     #         "beneficio_baleares": beneficio_baleares
     #     }
 
-    
-    def calcular_beneficio(self):
+    def calcular_beneficio(self, usar_precio_peninsula=True):
+        """
+        Calcula el beneficio estimado según la configuración de la batería y
+        decide si usar el precio de la península o Baleares.
         
-        s_max= self.config.get_bateria().get('capacidad_maxima')
-        b_max= self.config.get_bateria().get('energia_maxima_carga_descarga_por_hora')
-        v_max= self.config.get_bateria().get('maxima_venta_a_red')
-        s_init= self.config.get_bateria().get('soc_inicial') * s_max
+        :param usar_precio_peninsula: Booleano para decidir si usar precios de la península.
+                                    Si False, usa precios de Baleares.
+        """
+        # Seleccionar el precio a utilizar
+        precios = self.precio_peninsula if usar_precio_peninsula else self.precio_baleares
 
+        # Obtener parámetros de configuración de la batería
+        s_max = self.config.get_bateria().get('capacidad_maxima')
+        b_max = self.config.get_bateria().get('energia_maxima_carga_descarga_por_hora')
+        v_max = self.config.get_bateria().get('maxima_venta_a_red')
+        s_init = self.config.get_bateria().get('soc_inicial') * s_max/100
+
+        # Mostrar configuración
+        print("Usando precios de:", "Península" if usar_precio_peninsula else "Baleares")
         print("s_max: ", s_max)
         print("b_max: ", b_max)
         print("v_max: ", v_max)
         print("s_init: ", s_init)
-        
-        # print("precio: ", ow.maximize_cost(self.precio_peninsula, self.produccion_energia, False, s_max, b_max, v_max, s_init))
 
-
+        # Calcular el beneficio
+        # resultado = ow.maximize_cost(precios, self.produccion_energia, False, s_max, b_max, v_max, s_init)
+        # print("Resultado: ", resultado)

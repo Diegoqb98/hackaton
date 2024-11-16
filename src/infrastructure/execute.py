@@ -71,9 +71,11 @@ class MainExecutor:
         beneficio = beneficio_estimator.calcular_beneficio()
 
         # Mostrar el resultado
-        print(f"Beneficio en la Península: {beneficio['beneficio_peninsula']} €")
-        print(f"Beneficio en Baleares: {beneficio['beneficio_baleares']} €")
+        print(f"Beneficio en la Península: {beneficio} €")
 
+
+        beneficio = beneficio_estimator.calcular_beneficio(False)
+        print(f"Beneficio en Baleares: {beneficio} €")
 
         # db = DatabaseConnector(
         #     db_name="mi_base_datos",
