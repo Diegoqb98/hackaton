@@ -14,9 +14,9 @@ services:
     image: postgres:latest
     container_name: postgres-db
     environment:
-      POSTGRES_USER: your_user  # Usuario de PostgreSQL
-      POSTGRES_PASSWORD: your_password  # Contraseña de PostgreSQL
-      POSTGRES_DB: your_database  # Base de datos inicial
+      POSTGRES_USER: mi_usuario  # Usuario de PostgreSQL
+      POSTGRES_PASSWORD: mi_contrasenia  # Contraseña de PostgreSQL
+      POSTGRES_DB: mi_base_datos  # Base de datos inicial
     volumes:
       - postgres-data:/var/lib/postgresql/data  # Persistencia de datos
       - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Archivo de inicialización

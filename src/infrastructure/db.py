@@ -25,13 +25,21 @@ class DatabaseConnector:
         """
         Inserta datos en la tabla 'produccion_energia'.
 
-        :param data: Lista de tuplas (hora, energia_producida_kwh).
+        :param data: Array de valores de energía producida en kWh.
         """
+        # Crear una lista de tuplas a partir de los datos (se necesita para execute_batch)
+        data_tuples = [(valor,) for valor in data]
+        
+        # Query de inserción
         query = """
-        INSERT INTO produccion_energia (hora, energia_producida_kwh)
-        VALUES (%s, %s)
+        INSERT INTO produccion_energia (energia_producida_kwh)
+        VALUES (%s)
         """
-        execute_batch(self.cursor, query, data)
+        
+        # Ejecuta el batch de inserciones
+        execute_batch(self.cursor, query, data_tuples)
+        
+        # Realiza el commit para guardar los cambios en la base de datos
         self.connection.commit()
 
     def insert_precios_peninsula(self, data):

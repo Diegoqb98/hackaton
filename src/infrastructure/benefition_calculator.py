@@ -64,5 +64,9 @@ class BeneficioEstimation:
         print("s_init: ", s_init)
 
         # Calcular el beneficio
-        # resultado = ow.maximize_cost(precios, self.produccion_energia, False, s_max, b_max, v_max, s_init)
+        resultado = ow.maximize_cost(
+            precios = precios, produccion = self.produccion_energia, 
+            S_max = s_max, B_max = b_max, V_max = v_max, S_init = s_init)
+        venta = resultado[0]
+        return(venta)
         # print("Resultado: ", resultado)

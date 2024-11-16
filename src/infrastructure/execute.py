@@ -68,25 +68,23 @@ class MainExecutor:
         beneficio_estimator = BeneficioEstimation(produccion_energia, precios_peninsula, precios_baleares,config)
 
         # Calcular el beneficio estimado
-        beneficio = beneficio_estimator.calcular_beneficio()
+        beneficio_peninsula = beneficio_estimator.calcular_beneficio()
 
         # Mostrar el resultado
-        print(f"Beneficio en la Península: {beneficio} €")
+        print(f"Beneficio en la Península: {beneficio_peninsula} €")
 
 
-        beneficio = beneficio_estimator.calcular_beneficio(False)
-        print(f"Beneficio en Baleares: {beneficio} €")
+        beneficio_baleares = beneficio_estimator.calcular_beneficio(False)
+        print(f"Beneficio en Baleares: {beneficio_baleares} €")
 
         # db = DatabaseConnector(
         #     db_name="mi_base_datos",
         #     user="mi_usuario",
-        #     password="mi_contraseña",
+        #     password="mi_contrasenia",
         #     host="localhost",
         #     port=5432
         # )
-
-        # db.insert_produccion_energia(data_produccion)
-        # db.insert_precios_peninsula(data_precios_peninsula)
-        # db.insert_precios_baleares(data_precios_baleares)
-        # db.insert_produccion_energia(data_produccion)
+        # db.insert_produccion_energia(produccion_energia)
+        # db.insert_precios_peninsula(beneficio_peninsula)
+        # db.insert_precios_baleares(beneficio_baleares)
 
