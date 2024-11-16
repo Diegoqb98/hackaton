@@ -1,6 +1,6 @@
 import csv
 
-class PrecioMarginalFormatter:
+class PrecioMarginalTxTFormatter:
     """
     Formateador para extraer precios marginales del archivo y escribirlos en un archivo CSV.
     """

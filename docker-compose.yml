@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: python-app
+    volumes:
+      - ./files:/app/files  # Mount the local files folder into the container
+    env_file:
+      - .env  # Load environment variables from .env file
+    working_dir: /app

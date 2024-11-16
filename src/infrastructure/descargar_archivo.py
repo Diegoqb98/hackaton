@@ -2,11 +2,13 @@ import os
 import requests
 from datetime import datetime
 
+from src.infrastructure.url_builder import URLBuilder
+
 class FileDownloaderProcessor:
     """
     Clase para descargar un archivo según una fecha proporcionada.
     """
-    def __init__(self, base_url, download_folder, date_str):
+    def __init__(self, base_url, download_folder, date_str, api_type):
         """
         Inicializa la clase con los parámetros necesarios.
         :param base_url: URL base donde se encuentran los archivos.
@@ -24,15 +26,30 @@ class FileDownloaderProcessor:
         self.year = self.date.year
         
         # Construir la URL con la fecha proporcionada
-        self.url = self._build_url()
+        self.url = self._build_url(api_type)
 
-    def _build_url(self):
+    # def _build_url(self,):
+    #     """
+    #     Construye la URL dinámica para el archivo basado en la fecha proporcionada.
+    #     La URL se construye en el formato:
+    #     'https://www.omie.es/sites/default/files/dados/AGNO_YYYY/MES_MM/TXT/INT_PBC_EV_H_1_DD_MM_YYYY_DD_MM_YYYY.TXT'
+    #     """
+    #     return f"{self.base_url}/AGNO_{self.year}/MES_{self.month:02d}/TXT/INT_PBC_EV_H_1_{self.day:02d}_{self.month:02d}_{self.year}_{self.day:02d}_{self.month:02d}_{self.year}.TXT"
+
+
+    def _build_url(self, api_type):
         """
         Construye la URL dinámica para el archivo basado en la fecha proporcionada.
-        La URL se construye en el formato:
-        'https://www.omie.es/sites/default/files/dados/AGNO_YYYY/MES_MM/TXT/INT_PBC_EV_H_1_DD_MM_YYYY_DD_MM_YYYY.TXT'
+        Si `url_version` es 'v1', genera la URL con el formato 'AGNO_YYYY/MES_MM/...'.
+        Si `url_version` es 'v2', genera la URL con el formato para la descarga directa.
         """
-        return f"{self.base_url}/AGNO_{self.year}/MES_{self.month:02d}/TXT/INT_PBC_EV_H_1_{self.day:02d}_{self.month:02d}_{self.year}_{self.day:02d}_{self.month:02d}_{self.year}.TXT"
+        if api_type == "precio_marginal_txt":
+            return URLBuilder.build_url_v1(self.year,self.month,self.day,self.base_url)
+        elif api_type == "precio_marginal_i":
+            return URLBuilder.build_url_v2(self.year,self.month,self.day,self.base_url)
+        else:
+            raise ValueError("La versión de URL debe ser 'v1' o 'v2'.")
+        
 
     def download_file(self, file_path):
         """

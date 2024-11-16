@@ -1,5 +1,7 @@
 import os
-from src.infrastructure.formatter.precio_marginal import PrecioMarginalFormatter  # Asegúrate de que esta ruta sea correcta
+
+from src.infrastructure.formatter.precio_marginal_i import PrecioMarginalIFormatter
+from src.infrastructure.formatter.precio_marginal_txt import PrecioMarginalTxTFormatter
 
 
 class FileHandler:
@@ -7,8 +9,8 @@ class FileHandler:
     Clase para manejar la lectura, formateo y escritura de archivos.
     """
     api_format_map = {
-        "precio_marginal": PrecioMarginalFormatter,
-        # Aquí puedes añadir otros formateadores si los necesitas
+        "precio_marginal_txt": PrecioMarginalTxTFormatter,
+        "precio_marginal_i": PrecioMarginalIFormatter,
     }
 
     def __init__(self, input_file, output_file):
