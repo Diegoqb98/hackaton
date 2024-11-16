@@ -76,7 +76,8 @@ class EnergyProductionCalculator:
             
             print(f"Hora {hora.strftime('%H:%M')} - Energía producida: {energy_produced_kWh.iloc[i]:.3f} kWh")
 
-        return energy_list
+        return [float(num) for num in energy_list]
+
 
 
 # Ejemplo de uso

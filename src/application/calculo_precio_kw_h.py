@@ -73,7 +73,7 @@ class PriceCalculatorFromFile:
             precio_baleares_hora = self.precios_marginales[hora] * coef / 1000  # Convertir a €/kWh
             precios_baleares.append(precio_baleares_hora)
 
-        return precios_peninsula, precios_baleares
+        return [float(num) for num in precios_peninsula], [float(num) for num in precios_baleares]
 
     def display_prices(self):
         """

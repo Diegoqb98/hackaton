@@ -1,5 +1,6 @@
 from src.application.calcular_prod_fotovoltaica import EnergyProductionCalculator
 from src.application.calculo_precio_kw_h import PriceCalculatorFromFile
+from src.infrastructure.benefition_calculator import BeneficioEstimation
 from src.infrastructure.config.config import Configuracion
 from src.infrastructure.descargar_archivo import FileDownloaderProcessor
 from src.infrastructure.leer_archivo import FileHandler
@@ -39,7 +40,8 @@ class MainExecutor:
         calculator = EnergyProductionCalculator(config)
         
         # Calcular la energía para la fecha proporcionada
-        calculator.calculate_energy(self.date_str)
+        produccion_energia = calculator.calculate_energy(self.date_str)
+        
         
         # Crear instancia de FileDownloaderProcessor para descargar el archivo
         downloader_processor = FileDownloaderProcessor(self.base_url, self.download_folder, self.date_str, self.api_type)
@@ -54,4 +56,17 @@ class MainExecutor:
 
         # Crear la instancia de PriceCalculatorFromFile y mostrar los precios
         price_calculator = PriceCalculatorFromFile(self.config_file, self.output_file)
-        price_calculator.display_prices()
+        
+        # Precios energia KW/h calculado
+        precios_peninsula, precios_baleares = price_calculator.calculate_prices()
+
+        # Crear la instancia de la clase
+        beneficio_estimator = BeneficioEstimation(produccion_energia, precios_peninsula, precios_baleares)
+
+        # Calcular el beneficio estimado
+        beneficio = beneficio_estimator.calcular_beneficio()
+
+        # Mostrar el resultado
+        print(f"Beneficio en la Península: {beneficio['beneficio_peninsula']} €")
+        print(f"Beneficio en Baleares: {beneficio['beneficio_baleares']} €")
+
