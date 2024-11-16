@@ -55,7 +55,7 @@ class PriceCalculatorFromFile:
                 if i == 0:  # Solo procesamos la primera fila
                     precios_marginales = [float(precio.strip().replace(',', '.')) for precio in row]
                     break  # No es necesario seguir buscando
-                
+
         return precios_marginales
 
     def calculate_prices(self):

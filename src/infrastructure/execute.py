@@ -65,7 +65,7 @@ class MainExecutor:
         price_calculator.display_prices()
 
         # Crear la instancia de la clase
-        beneficio_estimator = BeneficioEstimation(produccion_energia, precios_peninsula, precios_baleares)
+        beneficio_estimator = BeneficioEstimation(produccion_energia, precios_peninsula, precios_baleares,config)
 
         # Calcular el beneficio estimado
         beneficio = beneficio_estimator.calcular_beneficio()
